@@ -1,0 +1,111 @@
+﻿<UserControl
+    x:Class="TwoPaneMapView.UserControls.SecurityIncidentMapControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TwoPaneMapView"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="MapColumn" Width="520" />
+            <ColumnDefinition x:Name="MiddleColumn" Width="*"/>
+            <ColumnDefinition x:Name="ControlColumn" Width="480" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 
+
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="Header" Height="48" />
+            <RowDefinition x:Name="MapRow" Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"  Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+            <TextBlock FontFamily="Segoe UI" FontSize="32" Text="NATO ATP-45 Nuclear Fallout and Chemical Hazard Predictor" TextAlignment="Left" Margin="20,0,0,0"  />
+        </Grid>
+
+        -->
+
+        <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1">
+
+            <!-- You will have to provide your own MapServiceToken value. You can get yours free at 
+                 the Bing Maps Dev Center, https://www.bingmapsportal.com   -->
+            <maps:MapControl
+                x:Name="mapControl" 
+                ZoomLevel="{x:Bind ZoomLevel, Mode=OneWay}"
+                Layers="{x:Bind EffectLayers}"
+                Style="Aerial3D"
+                Visibility="Visible"
+                TiltInteractionMode="PointerKeyboardAndControl"
+                RotateInteractionMode="PointerKeyboardAndControl"
+                ZoomInteractionMode="PointerKeyboardAndControl"
+                Center="{x:Bind Center, Mode=OneWay}" 
+                MapServiceToken="rcx5lwRA2KLMHBgYmwaH~RPUbQxscYp8rPtfPsiR68w~Ar-PHr-lJPK2D0Sil1yG-O4nHlp1ag49iZbq8-pgorWqlHVQfKQcMAWvUMAugN4n">
+            </maps:MapControl>            
+        </Grid>
+        <Grid Grid.Column="0" Grid.Row="1">
+            <controls:Expander x:Name="TargetListExpander" VerticalAlignment="Bottom" Height="550"
+                          Header="Incident Control Panel"
+                          Foreground="White"
+                          Background="DarkSlateBlue"
+                          IsExpanded="False"
+                          Opacity=".75"
+                          Visibility="Visible"
+                          ExpandDirection="Up" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto">
+                <controls:Expander.RenderTransform>
+                    <CompositeTransform SkewX="0.205" TranslateX="-0.746"/>
+                </controls:Expander.RenderTransform>
+                <RelativePanel x:Name="TargetListPanel" Padding="12">
+                    <TextBlock x:Name="TargetListPanelHeader"  Text="Incident Control Panel" FontSize="36" Margin="0,0,0,20" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True" />
+                    <Grid  x:Name="TargetListHeader" RelativePanel.Below="TargetListPanelHeader" RelativePanel.AlignVerticalCenterWithPanel="True" HorizontalAlignment="Left" VerticalAlignment="Center" Width="420">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="210" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Border BorderBrush="AntiqueWhite" Grid.Column="0" Margin="0,0,0,0" BorderThickness="0,0,0,0.5" HorizontalAlignment="Left" Height="20" VerticalAlignment="Center" Width="71">
+                            <TextBlock Text="Incident" Margin="1,0,0,0" />
+                        </Border>
+                        <Border Grid.Column="1" BorderBrush="AntiqueWhite" BorderThickness="0,0,0,0.5" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="130">
+                            <TextBlock Text="DateTime UTC" Margin="0,0,0,0"/>
+                        </Border>
+                        <Border Grid.Column="2" BorderBrush="AntiqueWhite" BorderThickness="0,0,0,0.5" HorizontalAlignment="Center" Height="20" VerticalAlignment="Center" Width="40">
+                            <TextBlock Text="Detail" Grid.Column="2" Margin="0,0,0,0" HorizontalAlignment="Right"/>
+                        </Border>
+                    </Grid>
+                    <ListView x:Name="TargetListView" Margin="0,0,0,0" IsItemClickEnabled="True" Height="235" Width="520" ItemsSource="{x:Bind local:MainPage.MappedIncidents, Mode=OneWay}" HorizontalAlignment="Center" RelativePanel.Below="TargetListHeader" VerticalAlignment="Top"
+                        SelectionChanged="TargetListView_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:NotificationListItem">
+                                <Grid Margin="0,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120" />
+                                        <ColumnDefinition Width="165" />
+                                        <ColumnDefinition Width="170" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Margin="0,0,0,0" Text="{x:Bind Details.IncidentHeaderShort}" TextWrapping="NoWrap"/>
+                                    <TextBlock Grid.Column="1" Margin="0,0,0,0" Text="{x:Bind Details.DateTimeOffset}" />
+                                    <TextBlock Grid.Column="2" Margin="0,0,0,0" TextAlignment="Right"  Text="{x:Bind Details.IncidentDescription}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <StackPanel Margin="35,20,0,0" x:Name="ListEffectsSwitches" Orientation="Horizontal"  RelativePanel.Below="TargetListView" RelativePanel.AlignHorizontalCenterWithPanel="True">
+                        <!-- <ToggleSwitch x:Name="ListFalloutSwitch" IsOn="True" Header="Fallout Zones" Toggled="ListFalloutSwitch_Toggled"/>
+                        <ToggleSwitch x:Name="ListBlastSwitch"  IsOn="True" Header="Blast Zones" Toggled="ListBlastSwitch_Toggled" />    -->
+                        <ToggleSwitch x:Name="DeleteEnableSwitch" IsOn="False" Header="Enable Delete" Toggled="DeleteEnableSwitch_Toggled" IsEnabled="False" />
+                    </StackPanel>
+                    <StackPanel Margin="0,20,0,0" x:Name="TargetListButtonsPanel" Orientation="Horizontal" RelativePanel.Below="ListEffectsSwitches" RelativePanel.AlignHorizontalCenterWithPanel="True">
+                        <Button x:Name="FlytoButton" Background="OliveDrab" Click="FlytoButton_Click" Content="Fly To" Height="50" Width="150" IsEnabled="False" />
+                        <Button x:Name="TargetDeleteButton" Margin="60,0,0,0" Click="TargetDeleteButton_Click"  FontSize="18" FontWeight="Bold" Background="Crimson" Content="Delete Incident" IsEnabled="{x:Bind CanDeleteTarget, Mode=OneWay}"  Height="50" Width="150" />
+                    </StackPanel>
+                </RelativePanel>
+            </controls:Expander>
+        </Grid>
+    </Grid>
+</UserControl>

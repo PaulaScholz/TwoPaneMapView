@@ -1,0 +1,102 @@
+﻿<Page
+    x:Class="TwoPaneMapView.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TwoPaneMapView"
+    xmlns:UserControls="using:TwoPaneMapView.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:MUXC="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" Margin="12">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Margin="0,0,0,5" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"
+                Style="{StaticResource SubtitleTextBlockStyle}" 
+                Text="Contoso Emergency Action Center" />
+        
+        <MUXC:TwoPaneView x:Name="MainView"
+                Pane1Length="1*"
+                Pane2Length="1*"
+                MinTallModeHeight="500"
+                MinWideModeWidth="700"
+                TallModeConfiguration="BottomTop"
+                WideModeConfiguration="LeftRight" 
+                Grid.Row="1">
+            <MUXC:TwoPaneView.Pane1>
+                <!-- Replace this with your own Pane1 content. -->
+                <Grid Padding="8" Margin="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <ToggleButton Width="{x:Bind ButtonWidth, Mode=OneWay}" CornerRadius="0" >
+                            <ToggleButton.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="All" Margin="0,0,10,0" />
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE9D5;"/>
+                                </StackPanel>
+                            </ToggleButton.Content>
+                        </ToggleButton>
+                        <ToggleButton Width="{x:Bind ButtonWidth, Mode=OneWay}" CornerRadius="0">
+                            <ToggleButton.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Security" Margin="0,0,10,0" />
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BA;"/>
+                                </StackPanel>
+                            </ToggleButton.Content>
+
+                        </ToggleButton>
+                        <ToggleButton Width="{x:Bind ButtonWidth, Mode=OneWay}" CornerRadius="0">
+                            <ToggleButton.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Medical" Margin="0,0,10,0" />
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA38;"/>
+                                </StackPanel>
+                            </ToggleButton.Content>
+                        </ToggleButton>
+                        <ToggleButton  Width="{x:Bind ButtonWidth, Mode=OneWay}" CornerRadius="0">
+                            <ToggleButton.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Police" Margin="0,0,10,0" />
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC81;"/>
+                                </StackPanel>
+                            </ToggleButton.Content>
+                        </ToggleButton>
+                        <ToggleButton Width="{x:Bind ButtonWidth, Mode=OneWay}" CornerRadius="0">
+                            <ToggleButton.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Fire" Margin="0,0,10,0" />
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC1B;"/>
+                                </StackPanel>
+                            </ToggleButton.Content>
+                        </ToggleButton>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Text="Security Incidents" FontSize="36" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        <UserControls:SecurityIncidentListControl ItemsSource="{x:Bind Items}" Margin="0,0,0,0" HorizontalAlignment="Center" />
+                    </StackPanel>
+                    
+                </Grid>
+            </MUXC:TwoPaneView.Pane1>
+            <MUXC:TwoPaneView.Pane2>
+                <!-- Replace this with your own Pane2 content. -->
+                <Grid Background="Blue"
+                Padding="8"
+                Margin="4">
+                    <UserControls:SecurityIncidentMapControl />
+                </Grid>
+            </MUXC:TwoPaneView.Pane2>
+        </MUXC:TwoPaneView>
+
+
+    </Grid>
+</Page>
