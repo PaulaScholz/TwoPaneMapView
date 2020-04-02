@@ -31,7 +31,7 @@
                 Grid.Row="1">
             <MUXC:TwoPaneView.Pane1>
                 <!-- Replace this with your own Pane1 content. -->
-                <Grid Padding="8" Margin="4">
+                <Grid x:Name="Pane1Grid" Padding="8" Margin="4">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
@@ -89,7 +89,7 @@
             </MUXC:TwoPaneView.Pane1>
             <MUXC:TwoPaneView.Pane2>
                 <!-- Replace this with your own Pane2 content. -->
-                <Grid Background="Blue"
+                <Grid x:Name="Pane2Grid" Background="Blue"
                 Padding="8"
                 Margin="4">
                     <UserControls:SecurityIncidentMapControl />

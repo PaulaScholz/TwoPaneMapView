@@ -6,7 +6,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using System.Diagnostics;
 using MUXC = Microsoft.UI.Xaml.Controls;
-using Windows.UI.ViewManagement;
+using Windows.UI.ViewManagement;    // for ApplicationView
+using Windows.Graphics.Display;     // for DisplayOrientations enum
+using TwoPaneMapView.UserControls;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -37,6 +39,9 @@ namespace TwoPaneMapView
         private GridLength OneStarGridLength = new GridLength(1, GridUnitType.Star);
         private GridLength ZeroStarGridLength = new GridLength(0, GridUnitType.Star);
 
+        // the number of toggleButtons we use on Pane 1
+        private double _numberOfButtons = 5;
+
         private bool _applicationIsSpanned = false;
 
         /// <summary>
@@ -53,10 +58,17 @@ namespace TwoPaneMapView
             }
         }
 
-        /// <summary>
-        /// Flag to indicate that we were previously spanned.
-        /// </summary>
-        private bool applicationWasSpanned = false;
+        private DisplayOrientations _currentDisplayOrientation = DisplayOrientations.Portrait;
+
+        public DisplayOrientations CurrentDisplayOrientation
+        {
+            get { return _currentDisplayOrientation; }
+            set
+            {
+                Set(ref _currentDisplayOrientation, value);
+            }
+        }
+
 
         /// <summary>
         /// This is bound in the UI to the back button visibility.
@@ -64,6 +76,17 @@ namespace TwoPaneMapView
         public bool ApplicationNotSpanned
         {
             get { return !_applicationIsSpanned; }
+        }
+
+        MUXC.TwoPaneViewMode _currentTPVMode = MUXC.TwoPaneViewMode.Wide;
+
+        public MUXC.TwoPaneViewMode CurrentTPVMode
+        {
+            get { return _currentTPVMode; }
+            set
+            {
+                Set(ref _currentTPVMode, value);
+            }
         }
 
         private double _buttonWidth = 140;
@@ -79,6 +102,9 @@ namespace TwoPaneMapView
                 Set(ref _buttonWidth, value);
             }
         }
+
+        private double _beginningWindowWidth = 0;
+        private double _beginningWindowHeight = 0;
 
         /// <summary>
         /// Returns which view (MainView, DisplayView or shared views) is dominant in the display.
@@ -104,11 +130,75 @@ namespace TwoPaneMapView
             // uncomment this if you have page-specific initialization
             Loaded += MainPage_Loaded;
 
+            // this is for the page to compute spanning status and orientation
             SizeChanged += MainPage_SizeChanged;
 
-            MainView.ModeChanged += MainView_ModeChanged;
+            // this is for the TwoPaneView to compute UI element size changes
+            MainView.SizeChanged += MainView_SizeChanged;
 
             SetBothPanesEqual();
+        }
+
+        /// <summary>
+        /// Fired when the size of the TwoPaneView changes.  This is where we adjust
+        /// UI element sizes within the TwoPaneView.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Debug.WriteLine("MainView_SizeChanged fired on TwoPaneView object.");
+
+            // need to adjust by the enclosing Grid's padding and margin values
+            double tpvWidth = MainView.ActualWidth - Pane1Grid.Padding.Left - Pane1Grid.Padding.Right
+                - Pane1Grid.Margin.Left - Pane1Grid.Margin.Right; 
+
+            if (CurrentDisplayOrientation == DisplayOrientations.Portrait && !ApplicationIsSpanned)
+            {
+                ButtonWidth = tpvWidth / _numberOfButtons;
+
+                SecurityIncidentListControl.Current.ListViewHeight = 300;
+
+                Debug.WriteLine("Portrait and not spanned");
+                Debug.WriteLine(string.Format("MainView.ActualWidth = {0}", MainView.ActualWidth));
+                Debug.WriteLine(string.Format("MainView.ActualHeight = {0}", MainView.ActualHeight));
+                Debug.WriteLine(string.Format("ButtonWidth = {0}", ButtonWidth));
+            }
+            else if (CurrentDisplayOrientation == DisplayOrientations.Landscape && !ApplicationIsSpanned)
+            {
+                ButtonWidth = tpvWidth / (_numberOfButtons * 2);
+
+                SecurityIncidentListControl.Current.ListViewHeight = 500;
+
+                Debug.WriteLine("Landscape and not spanned");
+                Debug.WriteLine(string.Format("MainView.ActualWidth = {0}", MainView.ActualWidth));
+                Debug.WriteLine(string.Format("MainView.ActualHeight = {0}", MainView.ActualHeight));
+                Debug.WriteLine(string.Format("ButtonWidth = {0}", ButtonWidth));
+            }
+            else if (CurrentDisplayOrientation == DisplayOrientations.Portrait && ApplicationIsSpanned)
+            {
+                ButtonWidth = tpvWidth / (_numberOfButtons * 2);
+
+                SecurityIncidentListControl.Current.ListViewHeight = 500;
+
+                Debug.WriteLine("Portrait and spanned");
+                Debug.WriteLine(string.Format("MainView.ActualWidth = {0}", MainView.ActualWidth));
+                Debug.WriteLine(string.Format("MainView.ActualHeight = {0}", MainView.ActualHeight));
+                Debug.WriteLine(string.Format("ButtonWidth = {0}", ButtonWidth));
+            }
+            else if (CurrentDisplayOrientation == DisplayOrientations.Landscape && ApplicationIsSpanned)
+            {
+                ButtonWidth = tpvWidth / _numberOfButtons;
+
+                SecurityIncidentListControl.Current.ListViewHeight = 500;
+
+                Debug.WriteLine("Landscape and spanned");
+                Debug.WriteLine(string.Format("MainView.ActualWidth = {0}", MainView.ActualWidth));
+                Debug.WriteLine(string.Format("MainView.ActualHeight = {0}", MainView.ActualHeight));
+                Debug.WriteLine(string.Format("ButtonWidth = {0}", ButtonWidth));
+            }
+
+            Debug.WriteLine("--------------------------------------------------------------");
         }
 
         /// <summary>
@@ -119,33 +209,10 @@ namespace TwoPaneMapView
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             // put your code here
-        }
+            _beginningWindowWidth = Window.Current.Bounds.Width;
+            _beginningWindowHeight = Window.Current.Bounds.Height;
 
-        /// <summary>
-        /// Used for debugging.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        private void MainView_ModeChanged(MUXC.TwoPaneView sender, object args)
-        {
-            switch (sender.Mode)
-            {
-                case MUXC.TwoPaneViewMode.SinglePane:
-                    //
-                    Debug.WriteLine("MainView_ModeChanged TwoPaneView Mode is SinglePane");
-                    break;
-                case MUXC.TwoPaneViewMode.Tall:
-                    //
-                    Debug.WriteLine("MainView_ModeChanged TwoPaneView Mode is Tall");
-                    break;
-                case MUXC.TwoPaneViewMode.Wide:
-                    //
-                    Debug.WriteLine("MainView_ModeChanged TwoPaneView Mode is Wide");
-                    break;
-                default:
-                    //
-                    break;
-            }
+            Debug.WriteLine(string.Format("Beginning Window Width {0}, Beginning Window Height {1}", _beginningWindowWidth, _beginningWindowHeight));
         }
 
         /// <summary>
@@ -156,57 +223,100 @@ namespace TwoPaneMapView
         /// <param name="e"></param>
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            Debug.WriteLine("MainPage_SizeChanged fired on Page object.");
 
-            switch (ApplicationView.GetForCurrentView().ViewMode)
+            Debug.WriteLine(string.Format("Previous size: {0} width  {1} height", e.PreviousSize.Width, e.PreviousSize.Height));
+            Debug.WriteLine(string.Format("New size: {0} width  {1} height", e.NewSize.Width, e.NewSize.Height));
+
+            // determine orientation & spanning state without using ApplicationView object
+            // through this little state machine
+
+            // If the PreviousSize values are zero, then the NewSize
+            // values are those at application launch.  If the app
+            // is minimized and then maximized, the PreviousSize values
+            // are whatever they were before minimized.  The app will
+            // always be maximized at an unspanned state, regardless of
+            // whether it was spanned before minimization.
+
+            // this if clause determines the initial conditions
+            if(e.PreviousSize.Width == 0 && e.PreviousSize.Height == 0)
             {
-                case ApplicationViewMode.Spanning:
-                    //
-                    Debug.WriteLine("MainPage_SizeChanged View Mode is ApplicationViewMode.Spanning");
-                    ApplicationIsSpanned = !ApplicationIsSpanned;
-                    break;
-                case ApplicationViewMode.Default:
-                    //
-                    Debug.WriteLine("MainPage_SizeChanged View Mode is ApplicationViewMode.Default");
-                    ApplicationIsSpanned = false;
-                    break;
-                case ApplicationViewMode.CompactOverlay:
-                    //
-                    Debug.WriteLine("MainPage_SizeChanged View Mode is ApplicationViewMode.CompactOverlay");
-                    break;
-                default:
-                    //
-                    break;
+                _beginningWindowWidth = e.NewSize.Width;
+                _beginningWindowHeight = e.NewSize.Height;
+
+                // Right now, all we know is we started from application launch
+                // and are unspanned. Let's determine whether or not we're 
+                // Landscape or Portrait orientation.
+                if(e.NewSize.Width < e.NewSize.Height)
+                {
+                    CurrentDisplayOrientation = DisplayOrientations.Portrait;
+                }
+                else
+                {                  
+                    CurrentDisplayOrientation = DisplayOrientations.Landscape;
+                }
+
+                // We always start out unspanned. Spanning is a result of user action.
+                ApplicationIsSpanned = false;
             }
+            else if (CurrentDisplayOrientation == DisplayOrientations.Portrait && !ApplicationIsSpanned)
+            {
+                // we're transitioning from Portrait-Unspanned to either Portrait-Spanned (spanning action)
+                // or Landscape-Unspanned (rotation action)
 
-
-            // if we're spanned and we have a current contact
-            // if the application is spanned, it doesn't matter what the Pane1Length or Pane2Length is
-            //if (ApplicationIsSpanned && GroupedListView.Current.SelectedContact != null)
-            //{
-            //    // set the flag so we know we were spanned
-            //    applicationWasSpanned = true;
-            //}
-            //else if (!ApplicationIsSpanned && GroupedListView.Current.SelectedContact != null)  // not spanned and have a current contact
-            //{
-            //    // if we were spanned and are now not
-            //    if (applicationWasSpanned)
-            //    {
-            //        // We want to see the DisplayView dominant
-            //        SetDisplayViewDominant();
-
-            //        applicationWasSpanned = false;
-            //    }
-            //    else if (CurrentDominantView == DominantView.Main)
-            //    {
-            //        // if we weren't spanned, and still are not, set GroupInfoList dominant
-            //        SetMainViewDominant();
-            //    }
-            //    else
-            //    {
-            //        // set the DisplayView Contact edit form dominant
-            //        SetDisplayViewDominant();
-            //    }
-            //}
+                // If height does not change, we're going to Portrait-spanned
+                if(e.PreviousSize.Height == e.NewSize.Height)
+                {
+                    ApplicationIsSpanned = true;
+                }
+                else
+                {
+                    // the height changed, we're now in Landscape unspanned
+                    CurrentDisplayOrientation = DisplayOrientations.Landscape;
+                }
+            }
+            else if (CurrentDisplayOrientation == DisplayOrientations.Landscape && !ApplicationIsSpanned)
+            {
+                // we're transitioning from Landscape-Unspanned to either Landscape-Spanned (spanning action)
+                // or Portrait-Unspanned (rotation action)
+                if(e.PreviousSize.Width == e.NewSize.Width)
+                {
+                    ApplicationIsSpanned = true;
+                }
+                else
+                {
+                    // the width changed, we're now in Portrait-Unspanned
+                    CurrentDisplayOrientation = DisplayOrientations.Portrait;
+                }
+            }
+            else if (CurrentDisplayOrientation == DisplayOrientations.Portrait && ApplicationIsSpanned)
+            {
+                // we're transitioning from Portrait-Spanned to either Portrait-Unspanned (spanning action)
+                // or Landscape-Spanned (rotation action)
+                if(e.PreviousSize.Height == e.NewSize.Height)
+                {
+                    ApplicationIsSpanned = false;
+                }
+                else
+                {
+                    // the height changed, we're now in Landscape-Spanned
+                    CurrentDisplayOrientation = DisplayOrientations.Landscape;
+                }
+            }
+            else if (CurrentDisplayOrientation == DisplayOrientations.Landscape && ApplicationIsSpanned)
+            {
+                // we're transitioning from Landscape-Spanned to either Landscape-Unspanned (spanning action)
+                // or Portrait-Spanned (rotation action)
+                if( e.PreviousSize.Width == e.NewSize.Width)
+                {
+                    ApplicationIsSpanned = false;
+                }
+                else
+                {
+                    // the width changed, we're now in Portrait-Spanned
+                    CurrentDisplayOrientation = DisplayOrientations.Portrait;
+                }
+            }            
         }
 
         /// <summary>
