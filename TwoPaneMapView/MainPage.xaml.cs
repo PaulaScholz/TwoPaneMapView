@@ -6,7 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using System.Diagnostics;
 using MUXC = Microsoft.UI.Xaml.Controls;
-using Windows.UI.ViewManagement;    // for ApplicationView
+//using Windows.UI.ViewManagement;    // for ApplicationView
 using Windows.Graphics.Display;     // for DisplayOrientations enum
 using TwoPaneMapView.UserControls;
 

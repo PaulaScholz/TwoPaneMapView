@@ -92,27 +92,28 @@ namespace TwoPaneMapView
             // this only gets executed once. These are some randomly
             // chosen map locations on the Microsoft campus, mostly
             // in the rebuild area, now demolished.
-            IncidentCollection.Add(MakeIncidentDetail("47.642054", "-122.131759"));
-            IncidentCollection.Add(MakeIncidentDetail("47.641969", "-122.129852"));
-            IncidentCollection.Add(MakeIncidentDetail("47.641320", "-122.131681"));
-            IncidentCollection.Add(MakeIncidentDetail("47.640568", "-122.131630"));
-            IncidentCollection.Add(MakeIncidentDetail("47.637459", "-122.131007"));
-            IncidentCollection.Add(MakeIncidentDetail("47.639305", "-122.126292"));
-            IncidentCollection.Add(MakeIncidentDetail("47.639497", "-122.128260"));
-            IncidentCollection.Add(MakeIncidentDetail("47.645151", "-122.142118"));
-            IncidentCollection.Add(MakeIncidentDetail("47.645289", "-122.334768"));
+            IncidentCollection.Add(MakeIncidentDetail("47.642054", "-122.131759", "Security", "Building Alarm", "Window Alarm Trip", "Alarm"));
+            IncidentCollection.Add(MakeIncidentDetail("47.641969", "-122.129852", "Security", "Manual Alarm", "Parking Area", "Alarm"));
+            IncidentCollection.Add(MakeIncidentDetail("47.641320", "-122.131681", "Security", "Building Alarm", "Door Alarm Trip", "Alarm"));
+            IncidentCollection.Add(MakeIncidentDetail("47.640568", "-122.131630", "Medical", "Telephone Report", "Shortness of Breath", "Ambulance"));
+            IncidentCollection.Add(MakeIncidentDetail("47.637459", "-122.131007", "Police", "Accident Report", "Automobile", "Dispatch"));
+            IncidentCollection.Add(MakeIncidentDetail("47.639305", "-122.126292", "Fire", "Building Alarm", "Fire Alarm Trip", "Confirmed"));
+            IncidentCollection.Add(MakeIncidentDetail("47.639497", "-122.128260", "Police", "Crime Report", "Assault", "Dispatch"));
+            IncidentCollection.Add(MakeIncidentDetail("47.645151", "-122.142118", "Medical", "Telephone Report", "Broken Leg", "Ambulance"));
+            IncidentCollection.Add(MakeIncidentDetail("47.645289", "-122.334768", "Security", "Intruder Alert", "Distress Alarm", "Dispatch"));
         }
 
-        private IncidentDetail MakeIncidentDetail(string latitude, string longitude)
+        private IncidentDetail MakeIncidentDetail(string latitude, string longitude, string IncidentType, string IncidentHeader, string IncidentDescription, string StatusCode)
         {
             IncidentDetail retValue = new IncidentDetail();
             incidentCount++;
 
             retValue.Id = new Guid().ToString();
             retValue.DateTimeOffset = DateTime.UtcNow.ToString();
-            retValue.IncidentHeader = string.Format("Security Alarm - Incident {0}", incidentCount);
-            retValue.StatusCode = "Alarm";
-            retValue.IncidentDescription = "Security Alarm Trip";
+            retValue.IncidentHeader = IncidentHeader;
+            retValue.IncidentType = IncidentType;
+            retValue.StatusCode = StatusCode;
+            retValue.IncidentDescription = IncidentDescription;
             retValue.Latitude = latitude;
             retValue.Longitude = longitude;
 

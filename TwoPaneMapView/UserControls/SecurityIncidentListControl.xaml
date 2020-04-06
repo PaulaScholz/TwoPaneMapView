@@ -7,11 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:data="using:TwoPaneMapView"
+    xmlns:converters="using:TwoPaneMapView.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
     <UserControl.Resources>
-        
+
+        <converters:StringToImageConverter x:Key="StringToImageConverter" />
+
         <DataTemplate x:Key="IncidentItemTemplate" x:DataType="data:IncidentDetail">
             <Grid>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -23,7 +26,8 @@
                             </StackPanel>
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <Image  Source="/Assets/SecurityIncidentIcon_16x16.png" Width="16" Height="16" VerticalAlignment="Top" Margin="0,5,0,0" />
+                    <Image  Source="{x:Bind IncidentType, Converter={StaticResource StringToImageConverter}}" Width="16" Height="16" VerticalAlignment="Top" Margin="0,5,0,0" />
+                    <TextBlock Margin="20,0,0,0" Text="{x:Bind IncidentType}" Foreground="GhostWhite" FontSize="20" />
                     <TextBlock Margin="20,0,0,0" Text="{x:Bind IncidentHeader}" Foreground="Yellow" FontSize="18"  />
                     <TextBlock Margin="20,0,0,0" Text="{x:Bind IncidentDescription}" FontSize="18" TextWrapping="WrapWholeWords" />
                 </StackPanel>

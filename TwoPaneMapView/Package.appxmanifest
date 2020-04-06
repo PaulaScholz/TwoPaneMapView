@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="c944e8bf-098d-48cd-8188-0f1d9aeebed9"
-    Publisher="CN=v-pauls"
-    Version="1.0.0.0" />
+    Name="53857PaulaScholz.TwoPaneMapView"
+    Publisher="CN=93138434-D281-4101-ABC7-D07249FA67C2"
+    Version="1.0.3.0" />
 
-  <mp:PhoneIdentity PhoneProductId="c944e8bf-098d-48cd-8188-0f1d9aeebed9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="63af7ec7-49fd-48eb-bf39-d31b92ec638c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>TwoPaneMapView</DisplayName>
-    <PublisherDisplayName>v-pauls</PublisherDisplayName>
+    <PublisherDisplayName>Paula Scholz</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -37,7 +37,7 @@
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="TwoPaneMapView"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>

@@ -81,7 +81,7 @@
                         </ToggleButton>
                     </StackPanel>
                     <StackPanel Grid.Row="1">
-                        <TextBlock Text="Security Incidents" FontSize="36" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        <TextBlock Text="Active Incidents" FontSize="36" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                         <UserControls:SecurityIncidentListControl ItemsSource="{x:Bind Items}" Margin="0,0,0,0" HorizontalAlignment="Center" />
                     </StackPanel>
                     
