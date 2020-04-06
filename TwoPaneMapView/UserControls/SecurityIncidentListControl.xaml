@@ -16,9 +16,16 @@
         <converters:StringToImageConverter x:Key="StringToImageConverter" />
 
         <DataTemplate x:Key="IncidentItemTemplate" x:DataType="data:IncidentDetail">
-            <Grid>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <ToggleButton Width="90" Margin="10,0,10,15" >
+            <Grid Height="48">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="37" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="190" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+                
+                    <ToggleButton Width="90" Margin="0,0,10,15" Grid.Column="0" >
                         <ToggleButton.Content>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Plot" Margin="0,0,10,0" />
@@ -26,11 +33,11 @@
                             </StackPanel>
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <Image  Source="{x:Bind IncidentType, Converter={StaticResource StringToImageConverter}}" Width="16" Height="16" VerticalAlignment="Top" Margin="0,5,0,0" />
-                    <TextBlock Margin="20,0,0,0" Text="{x:Bind IncidentType}" Foreground="GhostWhite" FontSize="20" />
-                    <TextBlock Margin="20,0,0,0" Text="{x:Bind IncidentHeader}" Foreground="Yellow" FontSize="18"  />
-                    <TextBlock Margin="20,0,0,0" Text="{x:Bind IncidentDescription}" FontSize="18" TextWrapping="WrapWholeWords" />
-                </StackPanel>
+                    <Image  Grid.Column="1" Source="{x:Bind IncidentType, Converter={StaticResource StringToImageConverter}}" Width="16" Height="16" VerticalAlignment="Top" Margin="0,8,10,0" />
+                    <TextBlock Grid.Column="2" Margin="0,0,0,0" Text="{x:Bind IncidentType}" Foreground="GhostWhite" FontSize="20" />
+                    <TextBlock Grid.Column="3" Margin="0,0,0,0" Text="{x:Bind IncidentHeader}" Foreground="Yellow" FontSize="18"  />
+                    <TextBlock Grid.Column="4" Margin="0,0,0,0" Text="{x:Bind IncidentDescription}" FontSize="18" TextWrapping="WrapWholeWords" />
+
             </Grid>
         </DataTemplate>
     </UserControl.Resources>

@@ -41,7 +41,7 @@
                         <ToggleButton Width="{x:Bind ButtonWidth, Mode=OneWay}" CornerRadius="0" >
                             <ToggleButton.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="All" Margin="0,0,10,0" />
+                                    <TextBlock Text="All" Margin="0,0,10,0" Foreground="GhostWhite" />
                                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE9D5;"/>
                                 </StackPanel>
                             </ToggleButton.Content>
@@ -49,8 +49,8 @@
                         <ToggleButton Width="{x:Bind ButtonWidth, Mode=OneWay}" CornerRadius="0">
                             <ToggleButton.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Security" Margin="0,0,10,0" />
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BA;"/>
+                                    <TextBlock Text="Security" Margin="0,0,10,0" Foreground="Red"/>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BA;" Foreground="Red" />
                                 </StackPanel>
                             </ToggleButton.Content>
 
@@ -58,24 +58,24 @@
                         <ToggleButton Width="{x:Bind ButtonWidth, Mode=OneWay}" CornerRadius="0">
                             <ToggleButton.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Medical" Margin="0,0,10,0" />
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA38;"/>
+                                    <TextBlock Text="Medical" Margin="0,0,10,0" Foreground="LightGreen"/>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA38;" Foreground="LightGreen"/>
                                 </StackPanel>
                             </ToggleButton.Content>
                         </ToggleButton>
                         <ToggleButton  Width="{x:Bind ButtonWidth, Mode=OneWay}" CornerRadius="0">
                             <ToggleButton.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Police" Margin="0,0,10,0" />
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC81;"/>
+                                    <TextBlock Text="Police" Margin="0,0,10,0" Foreground="Cyan"/>
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC81;" Foreground="Cyan"/>
                                 </StackPanel>
                             </ToggleButton.Content>
                         </ToggleButton>
                         <ToggleButton Width="{x:Bind ButtonWidth, Mode=OneWay}" CornerRadius="0">
                             <ToggleButton.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Fire" Margin="0,0,10,0" />
-                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC1B;"/>
+                                    <TextBlock Text="Fire" Margin="0,0,10,0" Foreground="Yellow" />
+                                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEC1B;" Foreground="Yellow"/>
                                 </StackPanel>
                             </ToggleButton.Content>
                         </ToggleButton>
